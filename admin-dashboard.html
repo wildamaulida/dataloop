@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — DataLoop</title>
+  <link rel="stylesheet" href="admin-dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    // Simple tab navigation
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuLinks = document.querySelectorAll('.sidebar a[data-tab]');
+      const sections = document.querySelectorAll('.main-section');
+      menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          menuLinks.forEach(l => l.classList.remove('active'));
+          this.classList.add('active');
+          const tab = this.getAttribute('data-tab');
+          sections.forEach(sec => {
+            sec.style.display = sec.id === tab ? 'block' : 'none';
+          });
+          document.querySelector('.topbar .title').textContent = this.textContent;
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand"><span style="font-size:1.3em;">DL</span>DataLoop</div>
+    <nav>
+      <ul>
+        <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
+        <li><a href="#" data-tab="user-management">User Management</a></li>
+        <li><a href="#" data-tab="transaction-management">Transaction Management</a></li>
+        <li><a href="#" data-tab="survey-monitoring">Survey Monitoring</a></li>
+        <li><a href="#" data-tab="respondent-stats">Respondent Stats</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="title">Dashboard</div>
+      <div class="profile">
+        <span>Admin Dataloop</span>
+        <img class="avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin Avatar" />
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- DASHBOARD -->
+      <section class="main-section" id="dashboard">
+        <div class="cards">
+          <div class="card">
+            <div class="card-title">Total Peneliti</div>
+            <div class="card-value">4</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Total Surveys</div>
+            <div class="card-value">4</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Total Transactions</div>
+            <div class="card-value">4</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Total Respondents</div>
+            <div class="card-value">100</div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="section-title">Analytics</div>
+          <div class="charts">
+            <div class="chart-box">
+              <div style="font-weight:600;margin-bottom:0.5rem;">Survey per Hari</div>
+              <canvas id="surveyChart" height="120"></canvas>
+            </div>
+            <div class="chart-box">
+              <div style="font-weight:600;margin-bottom:0.5rem;">Transaksi</div>
+              <canvas id="transactionChart" height="120"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- USER MANAGEMENT -->
+      <section class="main-section" id="user-management" style="display:none;">
+        <div class="section-title">User Management</div>
+        <div class="search-filter">
+          <input type="text" placeholder="Search user..." id="userSearch" />
+          <select id="roleFilter">
+            <option value="">All Roles</option>
+            <option value="Peneliti">Peneliti</option>
+            <option value="Responden">Responden</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table id="userTable">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Dummy Data -->
+              <!-- 4 Peneliti -->
+              <tr>
+                <td>Dr. Maya Putri</td>
+                <td>maya@kampus.ac.id</td>
+                <td>Peneliti, Responden</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
+              </tr>
+              <tr>
+                <td>Dr. Rina Dewi</td>
+                <td>rina@kampus.ac.id</td>
+                <td>Peneliti</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
+              </tr>
+              <tr>
+                <td>Dr. Budi Santoso</td>
+                <td>budi@kampus.ac.id</td>
+                <td>Peneliti, Responden</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
+              </tr>
+              <tr>
+                <td>Dr. Siti Aminah</td>
+                <td>siti@kampus.ac.id</td>
+                <td>Peneliti</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
+              </tr>
+              <!-- 100 Responden (20,20,30,30) -->
+              <!-- Lite 1: 20 -->
+              <tr><td>Andi Saputra</td><td>andi1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
+              <tr><td>Rina Sari</td><td>rina1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
+              <!-- ... 18 more for Lite 1 ... -->
+              <!-- Lite 2: 20 -->
+              <tr><td>Budi Santoso</td><td>budi1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
+              <!-- ... 19 more for Lite 2 ... -->
+              <!-- Standard 1: 30 -->
+              <tr><td>Siti Aminah</td><td>siti1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
+              <!-- ... 29 more for Standard 1 ... -->
+              <!-- Standard 2: 30 -->
+              <tr><td>Riko Prasetyo</td><td>riko1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
+              <!-- ... 29 more for Standard 2 ... -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TRANSACTION MANAGEMENT -->
+      <section class="main-section" id="transaction-management" style="display:none;">
+        <div class="section-title">Transaction Management</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Transaksi</th>
+                <th>User</th>
+                <th>Paket</th>
+                <th>Jumlah Bayar</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 2 transaksi Lite (20x2) -->
+              <tr>
+                <td>TX-1001</td>
+                <td>Dr. Maya Putri</td>
+                <td>Lite</td>
+                <td>Rp 30.000</td>
+                <td><span class="badge badge-success">Success</span></td>
+                <td>2026-04-01</td>
+              </tr>
+              <tr>
+                <td>TX-1002</td>
+                <td>Dr. Rina Dewi</td>
+                <td>Lite</td>
+                <td>Rp 30.000</td>
+                <td><span class="badge badge-success">Success</span></td>
+                <td>2026-04-01</td>
+              </tr>
+              <!-- 2 transaksi Standard (30x2) -->
+              <tr>
+                <td>TX-1003</td>
+                <td>Dr. Budi Santoso</td>
+                <td>Standard</td>
+                <td>Rp 60.000</td>
+                <td><span class="badge badge-success">Success</span></td>
+                <td>2026-04-02</td>
+              </tr>
+              <tr>
+                <td>TX-1004</td>
+                <td>Dr. Siti Aminah</td>
+                <td>Standard</td>
+                <td>Rp 60.000</td>
+                <td><span class="badge badge-success">Success</span></td>
+                <td>2026-04-02</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- SURVEY MONITORING -->
+      <section class="main-section" id="survey-monitoring" style="display:none;">
+        <div class="section-title">Survey Monitoring</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Judul Survey</th>
+                <th>Peneliti</th>
+                <th>Target Responden</th>
+                <th>Responden Masuk</th>
+                <th>Status</th>
+                <th>Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Survei Kepuasan Layanan</td>
+                <td>Dr. Maya Putri</td>
+                <td>20</td>
+                <td>20</td>
+                <td><span class="badge badge-success">Completed</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress" style="width:100%;background:var(--success)"></div></div>
+                  <span style="font-size:0.92em;">100%</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Survei Perilaku Digital</td>
+                <td>Dr. Rina Dewi</td>
+                <td>20</td>
+                <td>19</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress" style="width:95%"></div></div>
+                  <span style="font-size:0.92em;">95%</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Survei Pembayaran Nontunai</td>
+                <td>Dr. Budi Santoso</td>
+                <td>30</td>
+                <td>28</td>
+                <td><span class="badge badge-active">Active</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress" style="width:93%"></div></div>
+                  <span style="font-size:0.92em;">93%</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Survei Layanan Publik</td>
+                <td>Dr. Siti Aminah</td>
+                <td>30</td>
+                <td>30</td>
+                <td><span class="badge badge-success">Completed</span></td>
+                <td>
+                  <div class="progress-bar"><div class="progress" style="width:100%;background:var(--success)"></div></div>
+                  <span style="font-size:0.92em;">100%</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RESPONDENT STATS -->
+      <section class="main-section" id="respondent-stats" style="display:none;">
+        <div class="cards" style="margin-bottom:1.5rem;">
+          <div class="card">
+            <div class="card-title">Total Responden</div>
+            <div class="card-value">100</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Responden Aktif</div>
+            <div class="card-value">97</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Tidak Aktif</div>
+            <div class="card-value">3</div>
+          </div>
+        </div>
+        <div class="section-title">Distribusi Responden</div>
+        <div class="charts">
+          <div class="chart-box">
+            <div style="font-weight:600;margin-bottom:0.5rem;">Distribusi Usia</div>
+            <canvas id="ageChart" height="120"></canvas>
+          </div>
+          <div class="chart-box">
+            <div style="font-weight:600;margin-bottom:0.5rem;">Distribusi Wilayah</div>
+            <canvas id="regionChart" height="120"></canvas>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Dummy chart data
+const surveyChart = document.getElementById('surveyChart');
+if(surveyChart) {
+  new Chart(surveyChart, {
+    type: 'line',
+    data: {
+      labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+      datasets: [{
+        label: 'Survei',
+        data: [12, 19, 14, 17, 22, 18, 25],
+        borderColor: '#2563eb',
+        backgroundColor: 'rgba(37,99,235,0.08)',
+        tension: 0.4,
+        fill: true
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+const transactionChart = document.getElementById('transactionChart');
+if(transactionChart) {
+  new Chart(transactionChart, {
+    type: 'bar',
+    data: {
+      labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+      datasets: [{
+        label: 'Transaksi',
+        data: [5, 7, 6, 8, 10, 7, 12],
+        backgroundColor: '#2563eb',
+        borderRadius: 7
+      }]
+    },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+}
+const ageChart = document.getElementById('ageChart');
+if(ageChart) {
+  new Chart(ageChart, {
+    type: 'doughnut',
+    data: {
+      labels: ['18-25', '26-35', '36-45', '46+'],
+      datasets: [{
+        data: [40, 35, 15, 10],
+        backgroundColor: ['#2563eb', '#60a5fa', '#a5b4fc', '#cbd5e1']
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } } }
+  });
+}
+const regionChart = document.getElementById('regionChart');
+if(regionChart) {
+  new Chart(regionChart, {
+    type: 'pie',
+    data: {
+      labels: ['Jawa', 'Sumatera', 'Kalimantan', 'Sulawesi', 'Lainnya'],
+      datasets: [{
+        data: [100, 0, 0, 0, 0],
+        backgroundColor: ['#2563eb', '#38bdf8', '#fbbf24', '#f87171', '#a3a3a3']
+      }]
+    },
+    options: { plugins: { legend: { position: 'bottom' } } }
+  });
+}
+// User Management: search & filter
+const userSearch = document.getElementById('userSearch');
+const roleFilter = document.getElementById('roleFilter');
+const userTable = document.getElementById('userTable');
+if(userSearch && roleFilter && userTable) {
+  userSearch.addEventListener('input', filterUserTable);
+  roleFilter.addEventListener('change', filterUserTable);
+}
+function filterUserTable() {
+  const search = userSearch.value.toLowerCase();
+  const role = roleFilter.value;
+  Array.from(userTable.tBodies[0].rows).forEach(row => {
+    const name = row.cells[0].textContent.toLowerCase();
+    const email = row.cells[1].textContent.toLowerCase();
+    const userRole = row.cells[2].textContent;
+    let show = true;
+    if(search && !name.includes(search) && !email.includes(search)) show = false;
+    if(role && userRole !== role) show = false;
+    row.style.display = show ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
