@@ -30,7 +30,10 @@
 <div id="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <div class="brand"><span style="font-size:1.3em;">DL</span>DataLoop</div>
+    <div class="brand">
+      <img class="brand-logo" src="frontend/public/logo.png" alt="DataLoop" />
+      <span class="brand-text">DataLoop</span>
+    </div>
     <nav>
       <ul>
         <li><a href="#" class="active" data-tab="dashboard">Dashboard</a></li>
@@ -48,7 +51,12 @@
       <div class="title">Dashboard</div>
       <div class="profile">
         <span>Admin Dataloop</span>
-        <img class="avatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin Avatar" />
+        <div class="avatar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path>
+          </svg>
+        </div>
       </div>
     </header>
 
@@ -58,31 +66,99 @@
         <div class="cards">
           <div class="card">
             <div class="card-title">Total Peneliti</div>
-            <div class="card-value">4</div>
+            <div class="card-value" id="dashTotalResearchers">0</div>
           </div>
           <div class="card">
             <div class="card-title">Total Surveys</div>
-            <div class="card-value">4</div>
+            <div class="card-value" id="dashTotalSurveys">0</div>
           </div>
           <div class="card">
             <div class="card-title">Total Transactions</div>
-            <div class="card-value">4</div>
+            <div class="card-value" id="dashTotalTransactions">0</div>
           </div>
           <div class="card">
             <div class="card-title">Total Respondents</div>
-            <div class="card-value">100</div>
+            <div class="card-value" id="dashTotalRespondents">0</div>
+        </div>
+        </div>
+        <div class="insight-grid">
+          <div class="insight-card insight-card-highlight">
+            <div class="insight-kicker">Insight Hari Ini</div>
+            <div class="insight-headline" id="todayInsightHeadline">Memuat insight...</div>
+            <div class="insight-copy" id="todayInsightCopy">Data sedang dihitung berdasarkan aktivitas terakhir.</div>
+            <div class="insight-chip-row">
+              <span class="insight-chip" id="todayInsightTransactions">0 transaksi hari ini</span>
+              <span class="insight-chip" id="todayInsightActiveRespondents">0 responden aktif</span>
+              <span class="insight-chip" id="todayInsightPending">0 transaksi pending</span>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-kicker">Ringkas Hari Ini</div>
+            <div class="insight-mini-grid">
+              <div class="insight-mini">
+                <span class="insight-mini-label">Survey selesai</span>
+                <strong id="todayInsightCompletedSurvey">0</strong>
+              </div>
+              <div class="insight-mini">
+                <span class="insight-mini-label">Approval menunggu</span>
+                <strong id="todayInsightPendingText">0</strong>
+              </div>
+              <div class="insight-mini">
+                <span class="insight-mini-label">Tingkat aktif</span>
+                <strong id="todayInsightActiveRate">0%</strong>
+              </div>
+            </div>
           </div>
         </div>
         <div class="section">
-          <div class="section-title">Analytics</div>
+          <div class="section-title analytics-title-row">
+            <span>Analytics</span>
+            <div class="analytics-controls" id="analyticsRangeControls">
+              <button type="button" class="analytics-btn active" data-range="7">7D</button>
+              <button type="button" class="analytics-btn" data-range="14">14D</button>
+              <button type="button" class="analytics-btn" data-range="30">30D</button>
+            </div>
+          </div>
           <div class="charts">
             <div class="chart-box">
-              <div style="font-weight:600;margin-bottom:0.5rem;">Survey per Hari</div>
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Survey Completion</div>
+                  <div class="chart-subtitle" id="surveyChartMeta">Rata-rata progress 0%</div>
+                </div>
+              </div>
               <canvas id="surveyChart" height="120"></canvas>
             </div>
             <div class="chart-box">
-              <div style="font-weight:600;margin-bottom:0.5rem;">Transaksi</div>
+              <div class="chart-head">
+                <div>
+                  <div class="chart-title">Tren Transaksi</div>
+                  <div class="chart-subtitle" id="transactionChartMeta">0 transaksi pada rentang ini</div>
+                </div>
+                <div class="analytics-controls" id="analyticsMetricControls">
+                  <button type="button" class="analytics-btn active" data-metric="count">Jumlah</button>
+                  <button type="button" class="analytics-btn" data-metric="revenue">Revenue</button>
+                </div>
+              </div>
               <canvas id="transactionChart" height="120"></canvas>
+            </div>
+          </div>
+          <div class="analytics-kpi-row">
+            <div class="analytics-kpi">
+              <span>Total transaksi</span>
+              <strong id="analyticsTransactionsValue">0</strong>
+            </div>
+            <div class="analytics-kpi">
+              <span>Total revenue</span>
+              <strong id="analyticsRevenueValue">Rp 0</strong>
+            </div>
+            <div class="analytics-kpi">
+              <span>Success rate</span>
+              <strong id="analyticsSuccessRate">0%</strong>
+            </div>
+            <div class="analytics-kpi">
+              <span>Average ticket</span>
+              <strong id="analyticsAvgTicket">Rp 0</strong>
             </div>
           </div>
         </div>
@@ -97,7 +173,9 @@
             <option value="">All Roles</option>
             <option value="Peneliti">Peneliti</option>
             <option value="Responden">Responden</option>
+            <option value="Peneliti, Responden">Peneliti, Responden</option>
           </select>
+          <button class="action-btn" id="addUserBtn" type="button">+ Add User</button>
         </div>
         <div class="table-wrap">
           <table id="userTable">
@@ -110,61 +188,21 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <!-- Dummy Data -->
-              <!-- 4 Peneliti -->
-              <tr>
-                <td>Dr. Maya Putri</td>
-                <td>maya@kampus.ac.id</td>
-                <td>Peneliti, Responden</td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
-              </tr>
-              <tr>
-                <td>Dr. Rina Dewi</td>
-                <td>rina@kampus.ac.id</td>
-                <td>Peneliti</td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
-              </tr>
-              <tr>
-                <td>Dr. Budi Santoso</td>
-                <td>budi@kampus.ac.id</td>
-                <td>Peneliti, Responden</td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
-              </tr>
-              <tr>
-                <td>Dr. Siti Aminah</td>
-                <td>siti@kampus.ac.id</td>
-                <td>Peneliti</td>
-                <td><span class="badge badge-active">Active</span></td>
-                <td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td>
-              </tr>
-              <!-- 100 Responden (20,20,30,30) -->
-              <!-- Lite 1: 20 -->
-              <tr><td>Andi Saputra</td><td>andi1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
-              <tr><td>Rina Sari</td><td>rina1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
-              <!-- ... 18 more for Lite 1 ... -->
-              <!-- Lite 2: 20 -->
-              <tr><td>Budi Santoso</td><td>budi1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
-              <!-- ... 19 more for Lite 2 ... -->
-              <!-- Standard 1: 30 -->
-              <tr><td>Siti Aminah</td><td>siti1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
-              <!-- ... 29 more for Standard 1 ... -->
-              <!-- Standard 2: 30 -->
-              <tr><td>Riko Prasetyo</td><td>riko1@email.com</td><td>Responden</td><td><span class="badge badge-active">Active</span></td><td><button class="action-btn view">View</button><button class="action-btn suspend">Suspend</button></td></tr>
-              <!-- ... 29 more for Standard 2 ... -->
-            </tbody>
+            <tbody></tbody>
           </table>
+          <div class="pagination" id="userPagination"></div>
         </div>
       </section>
 
       <!-- TRANSACTION MANAGEMENT -->
       <section class="main-section" id="transaction-management" style="display:none;">
         <div class="section-title">Transaction Management</div>
+        <div class="search-filter" style="margin-bottom:0.8rem;">
+          <input type="text" placeholder="Search transaction..." id="transactionSearch" />
+          <button class="action-btn" id="addTransactionBtn" type="button">+ Add Transaction</button>
+        </div>
         <div class="table-wrap">
-          <table>
+          <table id="transactionTable">
             <thead>
               <tr>
                 <th>ID Transaksi</th>
@@ -173,44 +211,10 @@
                 <th>Jumlah Bayar</th>
                 <th>Status</th>
                 <th>Tanggal</th>
+                <th>Action</th>
               </tr>
             </thead>
-            <tbody>
-              <!-- 2 transaksi Lite (20x2) -->
-              <tr>
-                <td>TX-1001</td>
-                <td>Dr. Maya Putri</td>
-                <td>Lite</td>
-                <td>Rp 30.000</td>
-                <td><span class="badge badge-success">Success</span></td>
-                <td>2026-04-01</td>
-              </tr>
-              <tr>
-                <td>TX-1002</td>
-                <td>Dr. Rina Dewi</td>
-                <td>Lite</td>
-                <td>Rp 30.000</td>
-                <td><span class="badge badge-success">Success</span></td>
-                <td>2026-04-01</td>
-              </tr>
-              <!-- 2 transaksi Standard (30x2) -->
-              <tr>
-                <td>TX-1003</td>
-                <td>Dr. Budi Santoso</td>
-                <td>Standard</td>
-                <td>Rp 60.000</td>
-                <td><span class="badge badge-success">Success</span></td>
-                <td>2026-04-02</td>
-              </tr>
-              <tr>
-                <td>TX-1004</td>
-                <td>Dr. Siti Aminah</td>
-                <td>Standard</td>
-                <td>Rp 60.000</td>
-                <td><span class="badge badge-success">Success</span></td>
-                <td>2026-04-02</td>
-              </tr>
-            </tbody>
+            <tbody></tbody>
           </table>
         </div>
       </section>
@@ -282,121 +286,1074 @@
 
       <!-- RESPONDENT STATS -->
       <section class="main-section" id="respondent-stats" style="display:none;">
-        <div class="cards" style="margin-bottom:1.5rem;">
-          <div class="card">
-            <div class="card-title">Total Responden</div>
-            <div class="card-value">100</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Responden Aktif</div>
-            <div class="card-value">97</div>
-          </div>
-          <div class="card">
-            <div class="card-title">Tidak Aktif</div>
-            <div class="card-value">3</div>
-          </div>
-        </div>
         <div class="section-title">Distribusi Responden</div>
-        <div class="charts">
-          <div class="chart-box">
-            <div style="font-weight:600;margin-bottom:0.5rem;">Distribusi Usia</div>
-            <canvas id="ageChart" height="120"></canvas>
+        <div class="stats-showcase">
+          <div class="ring-panel">
+            <div class="ring-panel-header">
+              <div>
+                <div class="ring-title">Distribusi Usia</div>
+                <div class="ring-subtitle">Sebaran responden berdasarkan kelompok umur</div>
+              </div>
+              <div class="ring-total" id="respTotalRespondents">0</div>
+            </div>
+            <div class="ring-chart-shell">
+              <canvas id="ageChart" height="260"></canvas>
+              <div class="ring-center">
+                <span class="ring-center-label">Responden</span>
+                <strong id="ageChartCenterValue">0</strong>
+              </div>
+            </div>
+            <div class="ring-summary-row" id="ageSummaryChips"></div>
           </div>
-          <div class="chart-box">
-            <div style="font-weight:600;margin-bottom:0.5rem;">Distribusi Wilayah</div>
-            <canvas id="regionChart" height="120"></canvas>
+          <div class="ring-panel">
+            <div class="ring-panel-header">
+              <div>
+                <div class="ring-title">Distribusi Wilayah</div>
+                <div class="ring-subtitle">Komposisi sebaran lokasi responden</div>
+              </div>
+              <div class="ring-total" id="respActiveRespondents">0</div>
+            </div>
+            <div class="ring-chart-shell">
+              <canvas id="regionChart" height="260"></canvas>
+              <div class="ring-center">
+                <span class="ring-center-label">Wilayah Dominan</span>
+                <strong id="regionChartCenterValue">0</strong>
+                <span class="ring-center-meta" id="regionChartCenterMeta">0%</span>
+              </div>
+            </div>
+            <div class="ring-summary-row" id="regionSummaryChips"></div>
+            <div class="ring-note">Tidak Aktif: <strong id="respInactiveRespondents">0</strong></div>
           </div>
         </div>
       </section>
     </main>
   </div>
 </div>
+
+<div class="modal-overlay" id="userModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="userFormTitle">
+    <div class="modal-header">
+      <div class="form-title" id="userFormTitle">Tambah User</div>
+      <button class="modal-close" type="button" data-modal-close="userModal">&times;</button>
+    </div>
+    <div class="form-grid">
+      <input type="text" id="userNameInput" placeholder="Nama" />
+      <input type="email" id="userEmailInput" placeholder="Email" />
+      <select id="userRoleInput">
+        <option value="Peneliti">Peneliti</option>
+        <option value="Responden">Responden</option>
+        <option value="Peneliti, Responden">Peneliti, Responden</option>
+      </select>
+      <select id="userStatusInput">
+        <option value="Active">Active</option>
+        <option value="Suspended">Suspended</option>
+      </select>
+    </div>
+    <div class="form-actions">
+      <button class="action-btn" id="saveUserBtn" type="button">Simpan</button>
+      <button class="action-btn view" type="button" data-modal-close="userModal">Batal</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="transactionModal" aria-hidden="true">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="transactionFormTitle">
+    <div class="modal-header">
+      <div class="form-title" id="transactionFormTitle">Tambah Transaksi</div>
+      <button class="modal-close" type="button" data-modal-close="transactionModal">&times;</button>
+    </div>
+    <div class="form-grid form-grid-transaction">
+      <input type="text" id="transactionIdInput" placeholder="ID Transaksi (contoh: TX-2001)" />
+      <input type="text" id="transactionUserInput" placeholder="Nama User" />
+      <select id="transactionPackageInput">
+        <option value="Lite">Lite</option>
+        <option value="Standard">Standard</option>
+        <option value="Premium">Premium</option>
+      </select>
+      <input type="number" id="transactionAmountInput" placeholder="Jumlah Bayar" min="0" />
+      <select id="transactionStatusInput">
+        <option value="Success">Success</option>
+        <option value="Pending">Pending</option>
+        <option value="Failed">Failed</option>
+      </select>
+      <input type="date" id="transactionDateInput" />
+    </div>
+    <div class="form-actions">
+      <button class="action-btn" id="saveTransactionBtn" type="button">Simpan</button>
+      <button class="action-btn view" type="button" data-modal-close="transactionModal">Batal</button>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// Dummy chart data
-const surveyChart = document.getElementById('surveyChart');
-if(surveyChart) {
-  new Chart(surveyChart, {
+const storageKeys = {
+  users: 'dataloop_admin_users',
+  transactions: 'dataloop_admin_transactions',
+  seedVersion: 'dataloop_admin_seed_version'
+};
+
+function createDefaultUsers() {
+  const users = [
+    { id: 1, name: 'Dr. Maya Putri', email: 'maya@kampus.ac.id', role: 'Peneliti, Responden', status: 'Active', age: 32, region: 'Jawa' },
+    { id: 2, name: 'Dr. Rina Dewi', email: 'rina@kampus.ac.id', role: 'Peneliti', status: 'Active', age: 35, region: 'Jawa' },
+    { id: 3, name: 'Dr. Budi Santoso', email: 'budi@kampus.ac.id', role: 'Peneliti, Responden', status: 'Active', age: 41, region: 'Sumatera' },
+    { id: 4, name: 'Dr. Siti Aminah', email: 'siti@kampus.ac.id', role: 'Peneliti', status: 'Active', age: 39, region: 'Jawa' }
+  ];
+
+  const firstNames = ['Andi', 'Rina', 'Budi', 'Siti', 'Riko', 'Nadia', 'Dimas', 'Fajar', 'Aulia', 'Nisa'];
+  const lastNames = ['Saputra', 'Pratama', 'Kurniawan', 'Wijaya', 'Permata', 'Lestari', 'Mahendra', 'Pangestu', 'Putra', 'Ananda'];
+  const regions = ['Jawa', 'Sumatera', 'Kalimantan', 'Sulawesi', 'Bali'];
+
+  for (let i = 1; i <= 100; i += 1) {
+    const first = firstNames[(i - 1) % firstNames.length];
+    const last = lastNames[Math.floor((i - 1) / firstNames.length) % lastNames.length];
+    const region = regions[(i - 1) % regions.length];
+    const age = 18 + ((i * 3) % 37);
+    const isActive = i <= 97;
+
+    users.push({
+      id: 4 + i,
+      name: first + ' ' + last + ' ' + i,
+      email: 'responden' + i + '@dataloop.id',
+      role: 'Responden',
+      status: isActive ? 'Active' : 'Suspended',
+      age: age,
+      region: region
+    });
+  }
+
+  return users;
+}
+
+const defaultUsers = createDefaultUsers();
+
+const defaultTransactions = [
+  { id: 'TX-1001', user: 'Dr. Maya Putri', packageName: 'Lite', amount: 30000, status: 'Success', date: '2026-04-01' },
+  { id: 'TX-1002', user: 'Dr. Rina Dewi', packageName: 'Lite', amount: 30000, status: 'Success', date: '2026-04-01' },
+  { id: 'TX-1003', user: 'Dr. Budi Santoso', packageName: 'Standard', amount: 60000, status: 'Pending', date: '2026-04-02' }
+];
+
+const userState = {
+  data: loadData(storageKeys.users, defaultUsers),
+  editingId: null,
+  currentPage: 1,
+  pageSize: 20
+};
+
+const transactionState = {
+  data: loadData(storageKeys.transactions, defaultTransactions),
+  editingId: null
+};
+
+applySeedMigration();
+
+function loadData(key, fallback) {
+  const raw = localStorage.getItem(key);
+  if (!raw) {
+    localStorage.setItem(key, JSON.stringify(fallback));
+    return [...fallback];
+  }
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [...fallback];
+  } catch (error) {
+    return [...fallback];
+  }
+}
+
+function saveData(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function applySeedMigration() {
+  const version = localStorage.getItem(storageKeys.seedVersion);
+  if (version === 'v2') return;
+
+  const requiredRespondents = defaultUsers.filter(function(user) {
+    return user.role.includes('Responden');
+  });
+
+  let nextId = userState.data.length ? Math.max(...userState.data.map(function(item) { return item.id; })) + 1 : 1;
+
+  const existingEmails = new Set(userState.data.map(function(item) {
+    return String(item.email || '').toLowerCase();
+  }));
+
+  const existingRespondentCount = userState.data.filter(function(user) {
+    return String(user.role || '').includes('Responden');
+  }).length;
+
+  if (existingRespondentCount < 100) {
+    const needed = 100 - existingRespondentCount;
+    let added = 0;
+    for (let i = 0; i < requiredRespondents.length && added < needed; i += 1) {
+      const candidate = requiredRespondents[i];
+      const email = String(candidate.email).toLowerCase();
+      if (existingEmails.has(email)) continue;
+      userState.data.push({ ...candidate, id: nextId });
+      existingEmails.add(email);
+      nextId += 1;
+      added += 1;
+    }
+  }
+
+  saveData(storageKeys.users, userState.data);
+  localStorage.setItem(storageKeys.seedVersion, 'v2');
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function formatRupiah(amount) {
+  return 'Rp ' + Number(amount || 0).toLocaleString('id-ID');
+}
+
+function statusBadgeClass(status) {
+  if (status === 'Success' || status === 'Active') return 'badge-success';
+  if (status === 'Pending') return 'badge-pending';
+  if (status === 'Failed' || status === 'Suspended') return 'badge-danger';
+  return 'badge-warning';
+}
+
+function isRespondent(user) {
+  return String(user.role || '').includes('Responden');
+}
+
+function isResearcher(user) {
+  return String(user.role || '').includes('Peneliti');
+}
+
+function getAgeGroup(age) {
+  const num = Number(age);
+  if (!Number.isFinite(num)) return 'Unknown';
+  if (num <= 25) return '18-25';
+  if (num <= 35) return '26-35';
+  if (num <= 45) return '36-45';
+  return '46+';
+}
+
+let surveyChartInstance;
+let transactionChartInstance;
+let ageChartInstance;
+let regionChartInstance;
+const analyticsState = {
+  range: 7,
+  metric: 'count'
+};
+
+const analyticsRangeControls = document.getElementById('analyticsRangeControls');
+const analyticsMetricControls = document.getElementById('analyticsMetricControls');
+
+if (analyticsRangeControls) {
+  analyticsRangeControls.addEventListener('click', function(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const range = Number(target.getAttribute('data-range'));
+    if (!range || Number.isNaN(range)) return;
+    analyticsState.range = range;
+    setActiveAnalyticsButton(analyticsRangeControls, 'data-range', String(range));
+    renderDashboardMetrics();
+  });
+}
+
+if (analyticsMetricControls) {
+  analyticsMetricControls.addEventListener('click', function(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const metric = target.getAttribute('data-metric');
+    if (!metric) return;
+    analyticsState.metric = metric;
+    setActiveAnalyticsButton(analyticsMetricControls, 'data-metric', metric);
+    renderDashboardMetrics();
+  });
+}
+
+function setActiveAnalyticsButton(container, attr, value) {
+  Array.from(container.querySelectorAll('.analytics-btn')).forEach(function(btn) {
+    btn.classList.toggle('active', btn.getAttribute(attr) === value);
+  });
+}
+
+function renderDashboardMetrics() {
+  const totalResearchers = userState.data.filter(isResearcher).length;
+  const respondents = userState.data.filter(isRespondent);
+  const totalRespondents = respondents.length;
+  const activeRespondents = respondents.filter(function(user) { return user.status === 'Active'; }).length;
+  const inactiveRespondents = totalRespondents - activeRespondents;
+  const totalTransactions = transactionState.data.length;
+  const totalSurveys = document.querySelectorAll('#survey-monitoring tbody tr').length;
+  const pendingTransactions = transactionState.data.filter(function(item) { return item.status === 'Pending'; }).length;
+  const todayKey = getDateKey(new Date());
+  const todayTransactions = transactionState.data.filter(function(item) { return item.date === todayKey; }).length;
+  const completedSurveys = Array.from(document.querySelectorAll('#survey-monitoring tbody tr')).filter(function(row) {
+    const statusCell = row.cells[4];
+    return statusCell && statusCell.textContent.trim().toLowerCase() === 'completed';
+  }).length;
+  const activeRate = totalRespondents ? Math.round((activeRespondents / totalRespondents) * 100) : 0;
+
+  const setText = function(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(value);
+  };
+
+  setText('dashTotalResearchers', totalResearchers);
+  setText('dashTotalSurveys', totalSurveys);
+  setText('dashTotalTransactions', totalTransactions);
+  setText('dashTotalRespondents', totalRespondents);
+  setText('respTotalRespondents', totalRespondents);
+  setText('respActiveRespondents', activeRespondents);
+  setText('respInactiveRespondents', inactiveRespondents);
+  setText('todayInsightTransactions', todayTransactions + ' transaksi hari ini');
+  setText('todayInsightActiveRespondents', activeRespondents + ' responden aktif');
+  setText('todayInsightPending', pendingTransactions + ' transaksi pending');
+  setText('todayInsightCompletedSurvey', completedSurveys);
+  setText('todayInsightPendingText', pendingTransactions);
+  setText('todayInsightActiveRate', activeRate + '%');
+  setText('ageChartCenterValue', totalRespondents);
+
+  const headline = document.getElementById('todayInsightHeadline');
+  const copy = document.getElementById('todayInsightCopy');
+  if (headline && copy) {
+    if (todayTransactions > 0) {
+      headline.textContent = todayTransactions + ' transaksi masuk hari ini';
+      copy.textContent = 'Operasional berjalan aktif. Fokuskan cek pada transaksi baru dan status pending.';
+    } else if (pendingTransactions > 0) {
+      headline.textContent = 'Belum ada transaksi baru hari ini';
+      copy.textContent = 'Ada ' + pendingTransactions + ' transaksi pending yang perlu ditinjau.';
+    } else {
+      headline.textContent = 'Dashboard stabil untuk hari ini';
+      copy.textContent = 'Aktivitas responden tetap tinggi dan belum ada anomali besar pada transaksi.';
+    }
+  }
+
+  renderAgeSummary(respondents);
+  renderRegionSummary(respondents);
+
+  renderSurveyChart();
+  renderTransactionChartAndKpis();
+  renderAgeChart(respondents);
+  renderRegionChart(respondents);
+}
+
+function getDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
+
+function renderSurveyChart() {
+  const surveyChart = document.getElementById('surveyChart');
+  if (!surveyChart) return;
+
+  const rows = Array.from(document.querySelectorAll('#survey-monitoring tbody tr'));
+  const labels = rows.map(function(row, idx) {
+    const title = row.cells[0] ? row.cells[0].textContent.trim() : 'Survey ' + (idx + 1);
+    return title.length > 16 ? title.slice(0, 16) + '...' : title;
+  });
+  const values = rows.map(function(row) {
+    const target = Number(row.cells[2] ? row.cells[2].textContent : 0);
+    const current = Number(row.cells[3] ? row.cells[3].textContent : 0);
+    if (!target) return 0;
+    return Math.round((current / target) * 100);
+  });
+  const avgCompletion = values.length ? Math.round(values.reduce(function(sum, num) { return sum + num; }, 0) / values.length) : 0;
+  const surveyMeta = document.getElementById('surveyChartMeta');
+  if (surveyMeta) {
+    surveyMeta.textContent = 'Rata-rata progress ' + avgCompletion + '%';
+  }
+
+  if (surveyChartInstance) surveyChartInstance.destroy();
+  surveyChartInstance = new Chart(surveyChart, {
     type: 'line',
     data: {
-      labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+      labels: labels,
       datasets: [{
-        label: 'Survei',
-        data: [12, 19, 14, 17, 22, 18, 25],
+        label: 'Progress Survey (%)',
+        data: values,
         borderColor: '#2563eb',
-        backgroundColor: 'rgba(37,99,235,0.08)',
-        tension: 0.4,
+        backgroundColor: 'rgba(37,99,235,0.12)',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointBackgroundColor: '#ffffff',
+        pointBorderWidth: 2,
+        tension: 0.42,
         fill: true
       }]
     },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    options: {
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0f172a',
+          titleColor: '#e2e8f0',
+          bodyColor: '#ffffff',
+          callbacks: {
+            label: function(context) {
+              return ' Completion: ' + context.raw + '%';
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100,
+          grid: { color: 'rgba(148,163,184,0.22)' },
+          ticks: {
+            callback: function(value) { return value + '%'; }
+          }
+        },
+        x: { grid: { display: false } }
+      }
+    }
   });
 }
-const transactionChart = document.getElementById('transactionChart');
-if(transactionChart) {
-  new Chart(transactionChart, {
+
+function renderTransactionChartAndKpis() {
+  const transactionChart = document.getElementById('transactionChart');
+  if (!transactionChart) return;
+
+  const chartData = buildTransactionSeries(analyticsState.range);
+  const dataValues = analyticsState.metric === 'revenue' ? chartData.revenues : chartData.counts;
+  const labels = chartData.labels;
+  const isRevenueMode = analyticsState.metric === 'revenue';
+
+  const transactionMeta = document.getElementById('transactionChartMeta');
+  if (transactionMeta) {
+    if (isRevenueMode) {
+      transactionMeta.textContent = formatRupiah(chartData.totalRevenue) + ' dalam ' + analyticsState.range + ' hari terakhir';
+    } else {
+      transactionMeta.textContent = chartData.totalTransactions + ' transaksi dalam ' + analyticsState.range + ' hari terakhir';
+    }
+  }
+
+  const successRate = chartData.totalTransactions ? Math.round((chartData.successTransactions / chartData.totalTransactions) * 100) : 0;
+  const averageTicket = chartData.totalTransactions ? Math.round(chartData.totalRevenue / chartData.totalTransactions) : 0;
+
+  const setText = function(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = String(value);
+  };
+  setText('analyticsTransactionsValue', chartData.totalTransactions);
+  setText('analyticsRevenueValue', formatRupiah(chartData.totalRevenue));
+  setText('analyticsSuccessRate', successRate + '%');
+  setText('analyticsAvgTicket', formatRupiah(averageTicket));
+
+  const ctx = transactionChart.getContext('2d');
+  const gradient = ctx ? ctx.createLinearGradient(0, 0, 0, 240) : '#2563eb';
+  if (ctx) {
+    gradient.addColorStop(0, 'rgba(37,99,235,0.95)');
+    gradient.addColorStop(1, 'rgba(56,189,248,0.45)');
+  }
+
+  if (transactionChartInstance) transactionChartInstance.destroy();
+  transactionChartInstance = new Chart(transactionChart, {
     type: 'bar',
     data: {
-      labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+      labels: labels,
       datasets: [{
-        label: 'Transaksi',
-        data: [5, 7, 6, 8, 10, 7, 12],
-        backgroundColor: '#2563eb',
-        borderRadius: 7
+        label: isRevenueMode ? 'Revenue' : 'Jumlah Transaksi',
+        data: dataValues,
+        backgroundColor: gradient,
+        borderRadius: 10,
+        maxBarThickness: 36
       }]
     },
-    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    options: {
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0f172a',
+          titleColor: '#e2e8f0',
+          bodyColor: '#ffffff',
+          callbacks: {
+            label: function(context) {
+              return isRevenueMode
+                ? ' Revenue: ' + formatRupiah(context.raw)
+                : ' Transaksi: ' + context.raw;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: { color: 'rgba(148,163,184,0.2)' },
+          ticks: {
+            callback: function(value) {
+              return isRevenueMode ? compactRupiah(value) : value;
+            }
+          }
+        },
+        x: { grid: { display: false } }
+      }
+    }
   });
 }
-const ageChart = document.getElementById('ageChart');
-if(ageChart) {
-  new Chart(ageChart, {
+
+function buildTransactionSeries(rangeDays) {
+  const today = new Date();
+  const dayKeys = [];
+  for (let i = rangeDays - 1; i >= 0; i -= 1) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    dayKeys.push(getDateKey(d));
+  }
+
+  const buckets = {};
+  dayKeys.forEach(function(key) {
+    buckets[key] = { count: 0, revenue: 0 };
+  });
+
+  let totalTransactions = 0;
+  let totalRevenue = 0;
+  let successTransactions = 0;
+
+  transactionState.data.forEach(function(item) {
+    if (!buckets[item.date]) return;
+    const amount = Number(item.amount || 0);
+    buckets[item.date].count += 1;
+    buckets[item.date].revenue += amount;
+    totalTransactions += 1;
+    totalRevenue += amount;
+    if (item.status === 'Success') {
+      successTransactions += 1;
+    }
+  });
+
+  const labels = dayKeys.map(function(key) {
+    const date = new Date(key + 'T00:00:00');
+    return date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+  });
+
+  return {
+    labels: labels,
+    counts: dayKeys.map(function(key) { return buckets[key].count; }),
+    revenues: dayKeys.map(function(key) { return buckets[key].revenue; }),
+    totalTransactions: totalTransactions,
+    totalRevenue: totalRevenue,
+    successTransactions: successTransactions
+  };
+}
+
+function compactRupiah(value) {
+  const num = Number(value || 0);
+  if (num >= 1000000) return 'Rp ' + Math.round(num / 1000000) + 'jt';
+  if (num >= 1000) return 'Rp ' + Math.round(num / 1000) + 'rb';
+  return 'Rp ' + num;
+}
+
+function renderAgeChart(respondents) {
+  const ageChart = document.getElementById('ageChart');
+  if (!ageChart) return;
+
+  const buckets = { '18-25': 0, '26-35': 0, '36-45': 0, '46+': 0, Unknown: 0 };
+  respondents.forEach(function(user) {
+    const group = getAgeGroup(user.age);
+    buckets[group] = (buckets[group] || 0) + 1;
+  });
+
+  const labels = Object.keys(buckets).filter(function(label) { return buckets[label] > 0; });
+  const values = labels.map(function(label) { return buckets[label]; });
+
+  if (ageChartInstance) ageChartInstance.destroy();
+  ageChartInstance = new Chart(ageChart, {
     type: 'doughnut',
     data: {
-      labels: ['18-25', '26-35', '36-45', '46+'],
+      labels: labels,
       datasets: [{
-        data: [40, 35, 15, 10],
-        backgroundColor: ['#2563eb', '#60a5fa', '#a5b4fc', '#cbd5e1']
+        data: values,
+        borderWidth: 0,
+        borderRadius: 12,
+        hoverOffset: 8,
+        backgroundColor: ['#2563eb', '#60a5fa', '#a5b4fc', '#cbd5e1', '#94a3b8']
       }]
     },
-    options: { plugins: { legend: { position: 'bottom' } } }
+    options: {
+      cutout: '74%',
+      plugins: { legend: { display: false } },
+      layout: { padding: 8 }
+    }
   });
 }
-const regionChart = document.getElementById('regionChart');
-if(regionChart) {
-  new Chart(regionChart, {
-    type: 'pie',
+
+function renderRegionChart(respondents) {
+  const regionChart = document.getElementById('regionChart');
+  if (!regionChart) return;
+
+  const buckets = { Jawa: 0, Sumatera: 0, Kalimantan: 0, Sulawesi: 0, Bali: 0 };
+  respondents.forEach(function(user) {
+    const region = buckets[user.region] !== undefined ? user.region : 'Bali';
+    buckets[region] += 1;
+  });
+
+  const labels = Object.keys(buckets);
+  const values = labels.map(function(label) { return buckets[label]; });
+
+  if (regionChartInstance) regionChartInstance.destroy();
+  regionChartInstance = new Chart(regionChart, {
+    type: 'doughnut',
     data: {
-      labels: ['Jawa', 'Sumatera', 'Kalimantan', 'Sulawesi', 'Lainnya'],
+      labels: labels,
       datasets: [{
-        data: [100, 0, 0, 0, 0],
-        backgroundColor: ['#2563eb', '#38bdf8', '#fbbf24', '#f87171', '#a3a3a3']
+        data: values,
+        borderWidth: 2,
+        borderColor: '#ffffff',
+        borderRadius: 10,
+        hoverOffset: 8,
+        backgroundColor: createRegionGradients(regionChart)
       }]
     },
-    options: { plugins: { legend: { position: 'bottom' } } }
+    options: {
+      cutout: '66%',
+      plugins: { legend: { display: false } },
+      layout: { padding: 8 }
+    }
   });
 }
-// User Management: search & filter
+
+function createRegionGradients(canvasElement) {
+  const context = canvasElement.getContext('2d');
+  if (!context) {
+    return ['#2563eb', '#38bdf8', '#f59e0b', '#f87171', '#94a3b8'];
+  }
+
+  const palette = [
+    ['#1d4ed8', '#60a5fa'],
+    ['#0ea5e9', '#67e8f9'],
+    ['#d97706', '#fbbf24'],
+    ['#dc2626', '#f87171'],
+    ['#475569', '#94a3b8']
+  ];
+
+  return palette.map(function(pair) {
+    const gradient = context.createLinearGradient(0, 0, 260, 260);
+    gradient.addColorStop(0, pair[0]);
+    gradient.addColorStop(1, pair[1]);
+    return gradient;
+  });
+}
+
+function renderAgeSummary(respondents) {
+  const container = document.getElementById('ageSummaryChips');
+  if (!container) return;
+
+  const buckets = { '18-25': 0, '26-35': 0, '36-45': 0, '46+': 0 };
+  respondents.forEach(function(user) {
+    const group = getAgeGroup(user.age);
+    if (buckets[group] !== undefined) {
+      buckets[group] += 1;
+    }
+  });
+
+  container.innerHTML = Object.keys(buckets).map(function(label) {
+    return '<span class="summary-chip"><strong>' + label + '</strong><em>' + buckets[label] + '</em></span>';
+  }).join('');
+}
+
+function renderRegionSummary(respondents) {
+  const container = document.getElementById('regionSummaryChips');
+  const centerValue = document.getElementById('regionChartCenterValue');
+  const centerMeta = document.getElementById('regionChartCenterMeta');
+  if (!container) return;
+
+  const buckets = { Jawa: 0, Sumatera: 0, Kalimantan: 0, Sulawesi: 0, Bali: 0 };
+  respondents.forEach(function(user) {
+    const region = buckets[user.region] !== undefined ? user.region : 'Bali';
+    buckets[region] += 1;
+  });
+
+  const total = respondents.length || 1;
+  const entries = Object.keys(buckets).map(function(label) {
+    return {
+      label: label,
+      value: buckets[label],
+      percent: Math.round((buckets[label] / total) * 100)
+    };
+  }).sort(function(a, b) { return b.value - a.value; });
+
+  const dominant = entries[0] || { label: '-', percent: 0 };
+  if (centerValue) centerValue.textContent = dominant.label;
+  if (centerMeta) centerMeta.textContent = dominant.percent + '%';
+
+  container.innerHTML = entries.map(function(item, index) {
+    return '<span class="summary-chip summary-chip-muted' + (index === 0 ? ' summary-chip-top' : '') + '"><strong>' + item.label + '</strong><em>' + item.value + ' (' + item.percent + '%)</em></span>';
+  }).join('');
+}
+
+// User Management CRUD
 const userSearch = document.getElementById('userSearch');
 const roleFilter = document.getElementById('roleFilter');
 const userTable = document.getElementById('userTable');
-if(userSearch && roleFilter && userTable) {
-  userSearch.addEventListener('input', filterUserTable);
-  roleFilter.addEventListener('change', filterUserTable);
-}
-function filterUserTable() {
-  const search = userSearch.value.toLowerCase();
-  const role = roleFilter.value;
-  Array.from(userTable.tBodies[0].rows).forEach(row => {
-    const name = row.cells[0].textContent.toLowerCase();
-    const email = row.cells[1].textContent.toLowerCase();
-    const userRole = row.cells[2].textContent;
-    let show = true;
-    if(search && !name.includes(search) && !email.includes(search)) show = false;
-    if(role && userRole !== role) show = false;
-    row.style.display = show ? '' : 'none';
+const addUserBtn = document.getElementById('addUserBtn');
+const userFormContainer = document.getElementById('userFormContainer');
+const userFormTitle = document.getElementById('userFormTitle');
+const userNameInput = document.getElementById('userNameInput');
+const userEmailInput = document.getElementById('userEmailInput');
+const userRoleInput = document.getElementById('userRoleInput');
+const userStatusInput = document.getElementById('userStatusInput');
+const saveUserBtn = document.getElementById('saveUserBtn');
+const cancelUserBtn = document.getElementById('cancelUserBtn');
+
+if (userSearch && roleFilter) {
+  userSearch.addEventListener('input', function() {
+    userState.currentPage = 1;
+    renderUsers();
+  });
+  roleFilter.addEventListener('change', function() {
+    userState.currentPage = 1;
+    renderUsers();
   });
 }
+
+if (addUserBtn) {
+  addUserBtn.addEventListener('click', function() {
+    userState.editingId = null;
+    userFormTitle.textContent = 'Tambah User';
+    userNameInput.value = '';
+    userEmailInput.value = '';
+    userRoleInput.value = 'Peneliti';
+    userStatusInput.value = 'Active';
+    openModal('userModal');
+  });
+}
+
+if (saveUserBtn) {
+  saveUserBtn.addEventListener('click', function() {
+    const name = userNameInput.value.trim();
+    const email = userEmailInput.value.trim();
+    const role = userRoleInput.value;
+    const status = userStatusInput.value;
+
+    if (!name || !email) {
+      alert('Nama dan email wajib diisi.');
+      return;
+    }
+
+    const duplicateEmail = userState.data.some(function(item) {
+      return item.email.toLowerCase() === email.toLowerCase() && item.id !== userState.editingId;
+    });
+
+    if (duplicateEmail) {
+      alert('Email sudah dipakai user lain.');
+      return;
+    }
+
+    if (userState.editingId) {
+      userState.data = userState.data.map(function(item) {
+        if (item.id === userState.editingId) {
+          return { ...item, name: name, email: email, role: role, status: status };
+        }
+        return item;
+      });
+    } else {
+      const nextId = userState.data.length ? Math.max(...userState.data.map(function(item) { return item.id; })) + 1 : 1;
+      userState.data.unshift({ id: nextId, name: name, email: email, role: role, status: status });
+    }
+
+    saveData(storageKeys.users, userState.data);
+    closeModal('userModal');
+    userState.currentPage = 1;
+    renderUsers();
+    renderDashboardMetrics();
+  });
+}
+
+if (userTable) {
+  userTable.addEventListener('click', function(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const rowId = Number(target.getAttribute('data-id'));
+    if (!rowId) return;
+
+    if (target.classList.contains('edit-user')) {
+      const user = userState.data.find(function(item) { return item.id === rowId; });
+      if (!user) return;
+      userState.editingId = user.id;
+      userFormTitle.textContent = 'Edit User';
+      userNameInput.value = user.name;
+      userEmailInput.value = user.email;
+      userRoleInput.value = user.role;
+      userStatusInput.value = user.status;
+      openModal('userModal');
+    }
+
+    if (target.classList.contains('delete-user')) {
+      const confirmed = confirm('Hapus user ini?');
+      if (!confirmed) return;
+      userState.data = userState.data.filter(function(item) { return item.id !== rowId; });
+      saveData(storageKeys.users, userState.data);
+      const maxPage = Math.max(1, Math.ceil(getFilteredUsers().length / userState.pageSize));
+      userState.currentPage = Math.min(userState.currentPage, maxPage);
+      renderUsers();
+      renderDashboardMetrics();
+    }
+  });
+}
+
+function getFilteredUsers() {
+  const search = userSearch.value.trim().toLowerCase();
+  const role = roleFilter.value;
+
+  return userState.data.filter(function(user) {
+    const matchesSearch = !search || user.name.toLowerCase().includes(search) || user.email.toLowerCase().includes(search);
+    const matchesRole = !role || user.role === role;
+    return matchesSearch && matchesRole;
+  });
+}
+
+function renderUserPagination(totalItems) {
+  const pagination = document.getElementById('userPagination');
+  if (!pagination) return;
+
+  const totalPages = Math.max(1, Math.ceil(totalItems / userState.pageSize));
+  userState.currentPage = Math.min(Math.max(1, userState.currentPage), totalPages);
+
+  const canPrev = userState.currentPage > 1;
+  const canNext = userState.currentPage < totalPages;
+
+  pagination.innerHTML =
+    '<button class="page-btn" type="button" ' + (canPrev ? '' : 'disabled') + ' data-page="' + (userState.currentPage - 1) + '">‹ Prev</button>' +
+    '<span class="page-status">Halaman ' + userState.currentPage + ' dari ' + totalPages + '</span>' +
+    '<button class="page-btn" type="button" ' + (canNext ? '' : 'disabled') + ' data-page="' + (userState.currentPage + 1) + '">Next ›</button>';
+}
+
+const userPagination = document.getElementById('userPagination');
+if (userPagination) {
+  userPagination.addEventListener('click', function(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const page = Number(target.getAttribute('data-page'));
+    if (!page || Number.isNaN(page)) return;
+    userState.currentPage = page;
+    renderUsers();
+  });
+}
+
+function renderUsers() {
+  if (!userTable) return;
+
+  const filtered = getFilteredUsers();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / userState.pageSize));
+  userState.currentPage = Math.min(Math.max(1, userState.currentPage), totalPages);
+  const startIndex = (userState.currentPage - 1) * userState.pageSize;
+  const pagedUsers = filtered.slice(startIndex, startIndex + userState.pageSize);
+
+  userTable.tBodies[0].innerHTML = pagedUsers.map(function(user) {
+    const statusClass = user.status === 'Active' ? 'badge-active' : 'badge-suspended';
+    return '<tr>' +
+      '<td>' + escapeHtml(user.name) + '</td>' +
+      '<td>' + escapeHtml(user.email) + '</td>' +
+      '<td>' + escapeHtml(user.role) + '</td>' +
+      '<td><span class="badge ' + statusClass + '">' + escapeHtml(user.status) + '</span></td>' +
+      '<td>' +
+      '<button class="action-btn view edit-user" data-id="' + user.id + '">Edit</button>' +
+      '<button class="action-btn suspend delete-user" data-id="' + user.id + '">Delete</button>' +
+      '</td>' +
+      '</tr>';
+  }).join('');
+
+  if (!pagedUsers.length) {
+    userTable.tBodies[0].innerHTML = '<tr><td colspan="5">Belum ada data user.</td></tr>';
+  }
+
+  renderUserPagination(filtered.length);
+}
+
+// Transaction Management CRUD
+const transactionSearch = document.getElementById('transactionSearch');
+const transactionTable = document.getElementById('transactionTable');
+const addTransactionBtn = document.getElementById('addTransactionBtn');
+const transactionFormContainer = document.getElementById('transactionFormContainer');
+const transactionFormTitle = document.getElementById('transactionFormTitle');
+const transactionIdInput = document.getElementById('transactionIdInput');
+const transactionUserInput = document.getElementById('transactionUserInput');
+const transactionPackageInput = document.getElementById('transactionPackageInput');
+const transactionAmountInput = document.getElementById('transactionAmountInput');
+const transactionStatusInput = document.getElementById('transactionStatusInput');
+const transactionDateInput = document.getElementById('transactionDateInput');
+const saveTransactionBtn = document.getElementById('saveTransactionBtn');
+const cancelTransactionBtn = document.getElementById('cancelTransactionBtn');
+
+if (transactionSearch) {
+  transactionSearch.addEventListener('input', renderTransactions);
+}
+
+if (addTransactionBtn) {
+  addTransactionBtn.addEventListener('click', function() {
+    transactionState.editingId = null;
+    transactionFormTitle.textContent = 'Tambah Transaksi';
+    transactionIdInput.value = '';
+    transactionUserInput.value = '';
+    transactionPackageInput.value = 'Lite';
+    transactionAmountInput.value = '';
+    transactionStatusInput.value = 'Success';
+    transactionDateInput.valueAsDate = new Date();
+    openModal('transactionModal');
+  });
+}
+
+if (saveTransactionBtn) {
+  saveTransactionBtn.addEventListener('click', function() {
+    const id = transactionIdInput.value.trim();
+    const user = transactionUserInput.value.trim();
+    const packageName = transactionPackageInput.value;
+    const amount = Number(transactionAmountInput.value);
+    const status = transactionStatusInput.value;
+    const date = transactionDateInput.value;
+
+    if (!id || !user || !date || Number.isNaN(amount) || amount < 0) {
+      alert('Semua field transaksi wajib valid.');
+      return;
+    }
+
+    const duplicateId = transactionState.data.some(function(item) {
+      return item.id.toLowerCase() === id.toLowerCase() && item.id !== transactionState.editingId;
+    });
+
+    if (duplicateId) {
+      alert('ID transaksi sudah dipakai.');
+      return;
+    }
+
+    if (transactionState.editingId) {
+      transactionState.data = transactionState.data.map(function(item) {
+        if (item.id === transactionState.editingId) {
+          return { id: id, user: user, packageName: packageName, amount: amount, status: status, date: date };
+        }
+        return item;
+      });
+    } else {
+      transactionState.data.unshift({ id: id, user: user, packageName: packageName, amount: amount, status: status, date: date });
+    }
+
+    saveData(storageKeys.transactions, transactionState.data);
+    closeModal('transactionModal');
+    renderTransactions();
+    renderDashboardMetrics();
+  });
+}
+
+if (transactionTable) {
+  transactionTable.addEventListener('click', function(event) {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+
+    const rowId = target.getAttribute('data-id');
+    if (!rowId) return;
+
+    if (target.classList.contains('edit-transaction')) {
+      const transaction = transactionState.data.find(function(item) { return item.id === rowId; });
+      if (!transaction) return;
+      transactionState.editingId = transaction.id;
+      transactionFormTitle.textContent = 'Edit Transaksi';
+      transactionIdInput.value = transaction.id;
+      transactionUserInput.value = transaction.user;
+      transactionPackageInput.value = transaction.packageName;
+      transactionAmountInput.value = String(transaction.amount);
+      transactionStatusInput.value = transaction.status;
+      transactionDateInput.value = transaction.date;
+      openModal('transactionModal');
+    }
+
+    if (target.classList.contains('delete-transaction')) {
+      const confirmed = confirm('Hapus transaksi ini?');
+      if (!confirmed) return;
+      transactionState.data = transactionState.data.filter(function(item) { return item.id !== rowId; });
+      saveData(storageKeys.transactions, transactionState.data);
+      renderTransactions();
+      renderDashboardMetrics();
+    }
+  });
+}
+
+function renderTransactions() {
+  if (!transactionTable) return;
+
+  const search = transactionSearch.value.trim().toLowerCase();
+  const filtered = transactionState.data.filter(function(item) {
+    return !search ||
+      item.id.toLowerCase().includes(search) ||
+      item.user.toLowerCase().includes(search) ||
+      item.packageName.toLowerCase().includes(search) ||
+      item.status.toLowerCase().includes(search);
+  });
+
+  transactionTable.tBodies[0].innerHTML = filtered.map(function(item) {
+    return '<tr>' +
+      '<td>' + escapeHtml(item.id) + '</td>' +
+      '<td>' + escapeHtml(item.user) + '</td>' +
+      '<td>' + escapeHtml(item.packageName) + '</td>' +
+      '<td>' + formatRupiah(item.amount) + '</td>' +
+      '<td><span class="badge ' + statusBadgeClass(item.status) + '">' + escapeHtml(item.status) + '</span></td>' +
+      '<td>' + escapeHtml(item.date) + '</td>' +
+      '<td>' +
+      '<button class="action-btn view edit-transaction" data-id="' + escapeHtml(item.id) + '">Edit</button>' +
+      '<button class="action-btn suspend delete-transaction" data-id="' + escapeHtml(item.id) + '">Delete</button>' +
+      '</td>' +
+      '</tr>';
+  }).join('');
+
+  if (!filtered.length) {
+    transactionTable.tBodies[0].innerHTML = '<tr><td colspan="7">Belum ada data transaksi.</td></tr>';
+  }
+}
+
+renderUsers();
+renderTransactions();
+renderDashboardMetrics();
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  if (!document.querySelector('.modal-overlay.open')) {
+    document.body.classList.remove('modal-open');
+  }
+}
+
+document.querySelectorAll('[data-modal-close]').forEach(function(button) {
+  button.addEventListener('click', function() {
+    const modalId = button.getAttribute('data-modal-close');
+    if (modalId) closeModal(modalId);
+  });
+});
+
+document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+  modal.addEventListener('click', function(event) {
+    if (event.target === modal) {
+      closeModal(modal.id);
+    }
+  });
+});
+
+document.addEventListener('keydown', function(event) {
+  if (event.key !== 'Escape') return;
+  const openModalElement = document.querySelector('.modal-overlay.open');
+  if (openModalElement) {
+    closeModal(openModalElement.id);
+  }
+});
 </script>
 </body>
 </html>
