@@ -66,15 +66,12 @@
       gap: 0.7rem;
     }
 
-    .badge {
+    .brand-logo {
       width: 36px;
       height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
+      object-fit: contain;
+      display: block;
+      flex-shrink: 0;
     }
 
     .nav-actions {
@@ -220,7 +217,7 @@
 <body>
   <nav>
     <div class="container nav-wrap">
-      <a href="index.html" class="brand"><span class="badge">DL</span>LoopQue</a>
+      <a href="index.html" class="brand"><img class="brand-logo" src="Logo tanpa bg.png" alt="LoopQue" />LoopQue</a>
       <div class="nav-actions">
         <a href="#" class="btn btn-secondary">Buat Studi Baru</a>
         <a href="login-peneliti.html" class="btn btn-primary">Keluar</a>
